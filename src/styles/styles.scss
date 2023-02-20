@@ -1,0 +1,28 @@
+* {
+	font-family: "Josefin Sans", sans-serif;
+}
+
+body {
+	display: flex;
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	background-color: #6a5be2;
+}
+
+.progress-wrapper {
+	height: 10px;
+	margin-bottom: 20px;
+
+	.progress-bar {
+		height: 100%;
+		width: 80%;
+		border-radius: 30px;
+		background-color: rgb(72, 252, 72);
+		transition: all 0.3s ease-in-out;
+	}
+}
+
+span {
+	color: rgb(252, 186, 62);
+}
