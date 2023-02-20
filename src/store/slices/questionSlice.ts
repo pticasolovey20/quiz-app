@@ -41,7 +41,7 @@ export const fetchQuestions = createAsyncThunk(
 				url = url.concat(`&type=${question_type}`);
 			}
 
-			const { data } = await axios.get<any>(url);
+			const { data } = await axios.get(url);
 			return data.results;
 		} catch (error: unknown) {
 			if (error instanceof AxiosError) {
