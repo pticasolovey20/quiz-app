@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
-import { handleAmountChange, handleScoreChange } from "../store/slices/questionSlice";
+import { amountChangeAction, scoreChangeAction } from "../store/slices/questionSlice";
 
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
@@ -11,8 +11,8 @@ export const ResultPage = () => {
 	const { score, amount_of_questions } = useAppSelector((state) => state.questionSlice);
 
 	const handleBack = () => {
-		dispatch(handleScoreChange(0));
-		dispatch(handleAmountChange("5"));
+		dispatch(scoreChangeAction(0));
+		dispatch(amountChangeAction("5"));
 		navigate("/");
 	};
 

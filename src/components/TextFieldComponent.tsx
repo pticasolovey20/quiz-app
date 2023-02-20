@@ -1,5 +1,5 @@
 import { useAppDispatch } from "../hooks/redux-hooks";
-import { handleAmountChange } from "../store/slices/questionSlice";
+import { amountChangeAction } from "../store/slices/questionSlice";
 
 import { Box } from "@mui/system";
 import { FormControl, TextField, Typography } from "@mui/material";
@@ -8,7 +8,7 @@ export const TextFieldComponent = ({ error }: { error: string }) => {
 	const dispatch = useAppDispatch();
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		dispatch(handleAmountChange(event.target.value));
+		dispatch(amountChangeAction(event.target.value));
 	};
 
 	return (

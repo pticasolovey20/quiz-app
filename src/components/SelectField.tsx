@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks/redux-hooks";
 import {
-	handleCategoryChange,
-	handleDifficultyChange,
-	handleTypeChange,
+	categoryChangeAction,
+	difficultyChangeAction,
+	typeChangeAction,
 } from "../store/slices/questionSlice";
 import { IOptions } from "../model/IOptions";
 import { SelectChangeEvent } from "@mui/material/Select";
@@ -11,28 +11,29 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { Box } from "@mui/system";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-interface PropType {
+interface PropsType {
 	label: string;
 	options: IOptions[];
 }
 
-export const SelectField = ({ label, options }: PropType) => {
+export const SelectField = ({ label, options }: PropsType) => {
 	const [value, setValue] = useState("");
 	const dispatch = useAppDispatch();
 
 	const handleChange = (event: SelectChangeEvent<string>) => {
 		setValue(event.target.value);
+
 		switch (label) {
 			case "Category":
-				dispatch(handleCategoryChange(event.target.value));
+				dispatch(categoryChangeAction(event.target.value));
 				break;
 
 			case "Difficulty":
-				dispatch(handleDifficultyChange(event.target.value));
+				dispatch(difficultyChangeAction(event.target.value));
 				break;
 
 			case "Type":
-				dispatch(handleTypeChange(event.target.value));
+				dispatch(typeChangeAction(event.target.value));
 				break;
 
 			default:
@@ -44,11 +45,7 @@ export const SelectField = ({ label, options }: PropType) => {
 		<Box mb={3} width="100%" textAlign="start">
 			<FormControl size="small" fullWidth>
 				<InputLabel>{label}</InputLabel>
-				<Select
-					value={value}
-					label={label}
-					onChange={(event) => handleChange(event)}
-				>
+				<Select value={value} label={label} onChange={handleChange}>
 					{options.map(({ id, name }) => (
 						<MenuItem value={id} key={id}>
 							{name}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
-import { fetchQuestions, handleScoreChange } from "../store/slices/questionSlice";
+import { fetchQuestions, scoreChangeAction } from "../store/slices/questionSlice";
 import { useNavigate } from "react-router-dom";
 import { decode } from "html-entities";
 
@@ -8,6 +8,7 @@ import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 import { ProgressBar } from "../components/ProgressBar";
 import { LoadingPage } from "./LoadingPage";
+import { ErrorPage } from "./ErrorPage";
 
 const getRandomInt = (max: number): number => {
 	return Math.floor(Math.random() * Math.floor(max));
@@ -20,6 +21,7 @@ export const GamePage = () => {
 	const {
 		questions,
 		loading,
+		fetchError,
 		score,
 		question_category,
 		question_difficulty,
@@ -53,6 +55,7 @@ export const GamePage = () => {
 				0,
 				question.correct_answer
 			);
+
 			setOptions(answers);
 		}
 	}, [questions, questionIndex]);
@@ -61,12 +64,16 @@ export const GamePage = () => {
 		return <LoadingPage />;
 	}
 
+	if (fetchError) {
+		return <ErrorPage />;
+	}
+
 	const onClickVariant = (event: React.MouseEvent<HTMLButtonElement>) => {
 		const question = questions[questionIndex];
 
 		const target = event.target as HTMLButtonElement;
 		if (target.textContent === question.correct_answer) {
-			dispatch(handleScoreChange(score + 1));
+			dispatch(scoreChangeAction(score + 1));
 		}
 
 		if (questionIndex + 1 < questions.length) {
@@ -77,7 +84,7 @@ export const GamePage = () => {
 	};
 
 	const onClickClean = () => {
-		dispatch(handleScoreChange(0));
+		dispatch(scoreChangeAction(0));
 		setQuestionIndex(0);
 	};
 

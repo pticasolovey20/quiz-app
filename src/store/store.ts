@@ -1,5 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import questionSlice from "./slices/questionSlice";
 
 const rootReducer = combineReducers({ questionSlice });

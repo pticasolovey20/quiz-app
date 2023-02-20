@@ -11,11 +11,12 @@ import { categoryOption, difficultyOptions, typeOptions } from "../data/data";
 
 export const SettingsPage = () => {
 	const [error, setError] = useState("");
-	const navigate = useNavigate();
 	const { amount_of_questions } = useAppSelector((state) => state.questionSlice);
+	const navigate = useNavigate();
 
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
+
 		if (Number(amount_of_questions) >= 5) {
 			navigate("/game");
 		} else {

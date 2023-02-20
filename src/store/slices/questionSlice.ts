@@ -3,17 +3,17 @@ import axios, { AxiosError } from "axios";
 import { IResponse } from "../../model/IResponse";
 
 export interface QuestionState {
+	loading: boolean;
+	fetchError: string;
+	questions: IResponse[];
 	question_category: string;
 	question_difficulty: string;
 	question_type: string;
 	amount_of_questions: string;
 	score: number;
-	loading: boolean;
-	fetchError: string;
-	questions: IResponse[];
 }
 
-interface Param {
+interface ParamTypes {
 	question_category: string;
 	question_difficulty: string;
 	question_type: string;
@@ -23,7 +23,7 @@ interface Param {
 export const fetchQuestions = createAsyncThunk(
 	"questions/fetchQuestions",
 	async (
-		{ question_category, question_difficulty, question_type, amount_of_questions }: Param,
+		{ question_category, question_difficulty, question_type, amount_of_questions }: ParamTypes,
 		thunkAPI
 	) => {
 		try {
@@ -52,42 +52,51 @@ export const fetchQuestions = createAsyncThunk(
 );
 
 const initialState = {
+	loading: true,
+	fetchError: "",
+	questions: [],
 	question_category: "",
 	question_difficulty: "",
 	question_type: "",
 	amount_of_questions: "5",
 	score: 0,
-	loading: true,
-	fetchError: "",
-	questions: [],
 } as QuestionState;
 
 const questionSlice = createSlice({
 	name: "questions",
 	initialState,
 	reducers: {
-		handleCategoryChange(state, action: PayloadAction<string>) {
+		categoryChangeAction(state, action: PayloadAction<string>) {
 			state.question_category = action.payload;
 		},
-		handleDifficultyChange(state, action: PayloadAction<string>) {
+
+		difficultyChangeAction(state, action: PayloadAction<string>) {
 			state.question_difficulty = action.payload;
 		},
-		handleTypeChange(state, action: PayloadAction<string>) {
+
+		typeChangeAction(state, action: PayloadAction<string>) {
 			state.question_type = action.payload;
 		},
-		handleAmountChange(state, action: PayloadAction<string>) {
+
+		amountChangeAction(state, action: PayloadAction<string>) {
 			state.amount_of_questions = action.payload;
 		},
-		handleScoreChange(state, action: PayloadAction<number>) {
+
+		scoreChangeAction(state, action: PayloadAction<number>) {
 			state.score = action.payload;
 		},
 	},
 	extraReducers: {
+		[fetchQuestions.pending.type]: (state) => {
+			state.loading = true;
+		},
+
 		[fetchQuestions.fulfilled.type]: (state, action: PayloadAction<IResponse[]>) => {
 			state.loading = false;
 			state.questions = action.payload;
 			state.fetchError = "";
 		},
+
 		[fetchQuestions.rejected.type]: (state, action: PayloadAction<string>) => {
 			state.loading = false;
 			state.fetchError = action.payload;
@@ -96,10 +105,11 @@ const questionSlice = createSlice({
 });
 
 export default questionSlice.reducer;
+
 export const {
-	handleCategoryChange,
-	handleDifficultyChange,
-	handleTypeChange,
-	handleAmountChange,
-	handleScoreChange,
+	categoryChangeAction,
+	difficultyChangeAction,
+	typeChangeAction,
+	amountChangeAction,
+	scoreChangeAction,
 } = questionSlice.actions;
